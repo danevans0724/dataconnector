@@ -4,7 +4,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.SWT;
-import org.eclipse.wb.swt.SWTResourceManager;
+//import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.layout.GridData;
 
@@ -40,8 +40,8 @@ public class ConnectionDlgComposite extends Composite {
 		
 		Label lblHostConnection = new Label(this, SWT.NONE);
 		lblHostConnection.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
-		lblHostConnection.setForeground(SWTResourceManager.getColor(70, 130, 180));
-		lblHostConnection.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.BOLD | SWT.ITALIC));
+//		lblHostConnection.setForeground(SWTResourceManager.getColor(70, 130, 180));
+//		lblHostConnection.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.BOLD | SWT.ITALIC));
 		lblHostConnection.setText("Host Connection");
 		
 		Label lblHostName = new Label(this, SWT.NONE);
