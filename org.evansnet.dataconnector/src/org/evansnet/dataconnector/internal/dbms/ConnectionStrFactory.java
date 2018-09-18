@@ -1,5 +1,8 @@
 package org.evansnet.dataconnector.internal.dbms;
 
+import java.io.FileInputStream;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateFactory;
 import java.util.Properties;
 import java.util.Set;
 
@@ -13,11 +16,11 @@ public class ConnectionStrFactory {
 	IHost  host;
 	IDatabase db;
 	String connString;
-	Properties parmList;
+	private Properties parmList;
 	
 //	public String ConnectionStringFactory() {return null;}
 	
-	public ConnectionStrFactory(IHost h, IDatabase d) {
+	public ConnectionStrFactory(IHost h, IDatabase d) throws Exception {
 		dbtype = d.getDBMS();
 		host   = h;
 		db = d;
@@ -29,9 +32,10 @@ public class ConnectionStrFactory {
 	 * the DBMS type.
 	 * 
 	 * @return String 
+	 * @throws Exception 
 	 */
 
-	private void buildConnString() {
+	private void buildConnString() throws Exception {
 		
 		switch (dbtype) {
 		case DB2: 
@@ -98,7 +102,7 @@ public class ConnectionStrFactory {
 	 * jdbc:mysql://<<Host>>:3306/<<database>>
 	 * Example: jdbc:mysql://10.100.12.64:3306/DCEDB01
 	 */
-	private void buildMySQL() {
+	private void buildMySQL() throws Exception {
 		//TODO: Modify this to handle various parameters such as instance name etc.
 		setUIDPWD();
 		StringBuilder s = new StringBuilder();
@@ -124,7 +128,7 @@ public class ConnectionStrFactory {
 		connString = s.toString();
 	}
 
-	private void buildMSSQL_Server() {
+	private void buildMSSQL_Server() throws Exception {
 		//TODO: Modify this to handle various parameters such as instance name etc.
 		setUIDPWD();
 		StringBuilder s = new StringBuilder();
@@ -151,8 +155,9 @@ public class ConnectionStrFactory {
 	 * 
 	 * Client/Server model:
 	 * jdbc:derby://<<server>>[:<<port>>]/<<databaseName>>[;<URL attribute>=<value>]
+	 * @throws Exception 
 	 */
-	private void buildDerby() {
+	private void buildDerby() throws Exception {
 		// TODO Finish the connection string builder for Derby.
 		setUIDPWD();
 		
@@ -161,8 +166,9 @@ public class ConnectionStrFactory {
 	/**
 	 * jdbc:db2://<<HOST>>:<<PORT>>/<<DATABASE>>
 	 * Ex: jdbc:db2://DCEDB2Srv1:50000/DCEDB2
+	 * @throws Exception 
 	 */
-	private void buildDB2() {
+	private void buildDB2() throws Exception {
 		// TODO Finish the connection string builder for DB2.
 		setUIDPWD();
 		
@@ -172,14 +178,31 @@ public class ConnectionStrFactory {
 	 * Puts the user name and password into the Properties object, parmList.
 	 * These are the first two items in the properties object and are used
 	 * to set the user ID and password in the connection string
+	 * @throws Exception 
 	 * 
 	 */
-	private void setUIDPWD() {
+	private void setUIDPWD() throws Exception {
 		//TODO: if no credentials then pop a dialog and get them.
 		
 		parmList = new Properties();		
-		parmList.put("user", db.getCredentials().getUserID());
-		parmList.put("password", db.getCredentials().getPassword());
+		parmList.put("user", new String(db.getCredentials().getUserID()));
+		parmList.put("password", new String(db.getCredentials().getPassword(fetchCert()))); 
+	}
+	
+	
+	//TODO: Refactor and generalize this class into a common plugin.
+	private Certificate fetchCert() {
+		String certFile = "C:\\Users\\pmidce0\\git\\dataconnector\\org.evansnet.dataconnector\\security\\credentials.cer";
+		try {
+			FileInputStream fis = new FileInputStream(certFile);
+			CertificateFactory factory = CertificateFactory.getInstance("X.509");
+			Certificate cert = factory.generateCertificate(fis);
+			return cert;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	/**
@@ -200,7 +223,7 @@ public class ConnectionStrFactory {
 	/**
 	 * @return the connString
 	 */
-	public String getConnString() {
+	public String getConnString() throws Exception {
 		if (connString.isEmpty() || connString == null) {
 			buildConnString();
 		}

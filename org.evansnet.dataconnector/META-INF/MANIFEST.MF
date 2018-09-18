@@ -13,7 +13,6 @@ Export-Package: org.evansnet.dataconnector.internal.core,
  org.evansnet.dataconnector.internal.dbms,
  org.evansnet.dataconnector.ui
 Bundle-ClassPath: .,
- lib/db2jcc4.jar,
  lib/jtds-1.2.2.jar,
  lib/mysql-connector-java-5.1.32-bin.jar,
  lib/ojdbc6.jar,

@@ -49,7 +49,7 @@ import org.evansnet.dataconnector.internal.core.IHost;
                     + "loginTimeout=30;";  
 		 */
 		@Override
-		public String buildConnectionString(DBType dbt) {
+		public String buildConnectionString(DBType dbt) throws Exception {
 			javaLogger.log(Level.INFO, "Building SQL Server Connection String.");
 			ConnectionStrFactory csf = new ConnectionStrFactory(getHost(), this);
 			return csf.getConnString();
@@ -77,7 +77,7 @@ import org.evansnet.dataconnector.internal.core.IHost;
 			conn = c;
 		}
 		
-		public String getConnectionString() {
+		public String getConnectionString() throws Exception {
 			if (connStr.isEmpty()) {
 				connStr = buildConnectionString(DBType.MS_SQLSrv);
 			}
@@ -85,7 +85,7 @@ import org.evansnet.dataconnector.internal.core.IHost;
 		}
 
 		@Override
-		public Object addParms(String p, String v) {
+		public Object addParms(String p, char[] v) {
 			return parmList.put(p, v);
 		}
 

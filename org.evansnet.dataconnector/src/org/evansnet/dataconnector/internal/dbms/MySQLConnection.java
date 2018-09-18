@@ -32,7 +32,7 @@ public class MySQLConnection extends DBMS {
 		super.setHost(h);
 	}
 	@Override
-	public String buildConnectionString(DBType dbt) {
+	public String buildConnectionString(DBType dbt) throws Exception {
 		javaLogger.log(Level.INFO, "Building MySQL Connection String.");
 		ConnectionStrFactory csf = new ConnectionStrFactory(getHost(), this);
 		return csf.getConnString();
@@ -65,7 +65,7 @@ public class MySQLConnection extends DBMS {
 	}
 
 	@Override
-	public Object addParms(String p, String v) {
+	public Object addParms(String p, char[] v) {
 		return parmList.put(p, v);
 	}
 

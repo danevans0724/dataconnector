@@ -6,7 +6,7 @@ import org.evansnet.dataconnector.internal.core.DBType;
 
 public interface IDatabase {
 	
-	public String buildConnectionString(DBType dbType);
+	public String buildConnectionString(DBType dbType) throws Exception;
 	public Connection connect(String connStr) throws SQLException;
 	
 	public String getInstanceName();
@@ -14,12 +14,12 @@ public interface IDatabase {
 	public void   setDatabaseName(String d);
 	public String getDatabaseName();
 	public DBType getDBMS();
-	public Object addParms(String p, String v);
+	public Object addParms(String p, char[] v);
 	public Credentials getCredentials();
 	public void setCredentials(Credentials c);
 	public String getSchema();
 	public Connection getConnection();
-	public String getConnectionString();
+	public String getConnectionString() throws Exception;
 	public void setConnectionString(String s);
 	public IHost getHost();
 	public void setSchema(String string);

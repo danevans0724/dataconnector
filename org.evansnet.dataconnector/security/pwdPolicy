@@ -1,0 +1,8 @@
+/* AUTOMATICALLY GENERATED ON Thu Aug 02 06:39:50 EDT 2018*/
+/* DO NOT EDIT */
+
+grant codeBase "file://org/evansnet/dataconnector/internal/core/" {
+  permission java.util.PropertyPermission "user.home", "read";
+  permission java.util.PropertyPermission "java.home", "read";
+};
+

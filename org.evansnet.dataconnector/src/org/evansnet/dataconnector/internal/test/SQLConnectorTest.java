@@ -2,6 +2,9 @@ package org.evansnet.dataconnector.internal.test;
 
 import static org.junit.Assert.*;
 
+import java.io.FileInputStream;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateFactory;
 import java.sql.Connection;
 import java.sql.SQLException;
 import org.junit.Test;
@@ -15,19 +18,27 @@ public class SQLConnectorTest {
 	DBMS dbInst;
 	Credentials credentials;
 	
-	public void setupForTests() throws ClassNotFoundException, SQLException {
+	public void setupForTests() throws Exception {
 		dbInst = new SQLSrvConnection();
 		dbInst.getHost().setHostName("localhost");
 		dbInst.getHost().setPort(1433);
-		credentials = new Credentials("devans", "3xnhlcup");
+		credentials = new Credentials();
+		credentials.setUserID("Dan".toCharArray());
+		credentials.setPassword("3xnhlcup".toCharArray());
 		dbInst.setInstanceName(dbInst.getHost().getHostName());
 		dbInst.setDatabaseName("DCEDB01");
-//		dbInst.getHost().setIPaddress("127.0.0.1");
 		dbInst.setCredentials(credentials);
 		dbInst.addParms("user", credentials.getUserID());
-		dbInst.addParms("password", credentials.getPassword());
+		dbInst.addParms("password", credentials.getPassword(fetchCertificate()));
 	}
 	
+	
+	private Certificate fetchCertificate() throws Exception {
+		String certFile = "C:\\Users\\pmidce0\\git\\dataconnector\\org.evansnet.dataconnector\\security\\credentials.cer";
+		FileInputStream fis = new FileInputStream (certFile);
+		Certificate cert = CertificateFactory.getInstance("X.509").generateCertificate(fis);
+		return cert;
+	}
 
 	@Test
 	public void testGetSQLConnection() throws SQLException {

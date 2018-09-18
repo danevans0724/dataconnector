@@ -23,7 +23,7 @@ public class Host implements IHost {
 		ipAddress = new String("");
 		port = -1;
 		hostProperties = new Properties();
-		credentials = new Credentials("","");
+//		credentials = new Credentials("","");
 		shareName = new String("");
 	}
 	

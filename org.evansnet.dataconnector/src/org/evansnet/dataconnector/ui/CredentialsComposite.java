@@ -50,8 +50,8 @@ public class CredentialsComposite extends Composite {
 		txtUserID.setText(uid);
 	}
 
-	public String getTxtPassword() {
-		String s = new String(txtPassword.getTextChars());
+	public char[] getTxtPassword() {
+		char[] s = new String(txtPassword.getTextChars()).toCharArray();
 		return s;
 	}
 

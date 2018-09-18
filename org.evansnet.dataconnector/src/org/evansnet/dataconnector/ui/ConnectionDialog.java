@@ -47,7 +47,7 @@ public class ConnectionDialog extends Dialog {
 		setText("Create Connection");
 		shlConn = parent;
 		host = new Host();
-		credentials = new Credentials(new String(), new String());
+		credentials = new Credentials();
  		createContents();
 	} 
 
@@ -83,7 +83,7 @@ public class ConnectionDialog extends Dialog {
 				if(selButton == "button connect") {
 					try {
 						doConnect();
-					} catch (ClassNotFoundException | SQLException e1) {
+					} catch (Exception e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
@@ -123,7 +123,7 @@ public class ConnectionDialog extends Dialog {
 		buttonComposite.setLayoutData(gd_buttonComposite);
 	 }
 	
-	private void doConnect() throws ClassNotFoundException, SQLException {
+	private void doConnect() throws Exception {
 		modelPopulate();
 		String cStr = dbms.buildConnectionString(dbms.getDBMS());
 		try {
@@ -146,10 +146,9 @@ public class ConnectionDialog extends Dialog {
 	/**
 	 * Gets the values from the controls and populates the host, dbms,
 	 * credentials model objects.
-	 * @throws SQLException 
-	 * @throws ClassNotFoundException 
+	 * @throws Exception 
 	 */
-	private void modelPopulate() throws ClassNotFoundException, SQLException {
+	private void modelPopulate() throws Exception {
 		DBType dbt = DBType.NONE;
 		dbt = dbt.getType(dbComposite.getDbType());
 		
@@ -175,7 +174,7 @@ public class ConnectionDialog extends Dialog {
 		dbms.setSchema(dbComposite.getSchema());
 		
 		credentials.setPassword(credentialsComposite.getTxtPassword());
-		credentials.setUserID(credentialsComposite.getTxtUserID());
+		credentials.setUserID(credentialsComposite.getTxtUserID().toCharArray());
 		dbms.setCredentials(credentials);
 	}
 	

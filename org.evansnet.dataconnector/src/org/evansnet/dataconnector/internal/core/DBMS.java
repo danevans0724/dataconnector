@@ -83,13 +83,13 @@ public class DBMS implements IDatabase {
 	}
 
 	@Override
-	public String buildConnectionString(DBType dbType) {
+	public String buildConnectionString(DBType dbType) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Object addParms(String p, String v) {
+	public Object addParms(String p, char[] v) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -100,7 +100,7 @@ public class DBMS implements IDatabase {
 	}
 
 	@Override
-	public String getConnectionString() {
+	public String getConnectionString() throws Exception {
 		return null;
 	}
 
