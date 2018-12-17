@@ -41,8 +41,9 @@ public class ConnectionDialog extends Dialog {
 	 * Create the dialog.
 	 * @param parent
 	 * @param style
+	 * @throws Exception 
 	 */
-	public ConnectionDialog(Shell parent, int style) {
+	public ConnectionDialog(Shell parent, int style) throws Exception {
 		super(parent, style);
 		setText("Create Connection");
 		shlConn = parent;

@@ -50,47 +50,47 @@ public class CredentialsTest {
 		certificate = null;
 	}
 
-	@Test
-	public void testFetchKey() throws Exception {
-		setUp();
-		PublicKey sourceKey = certificate.getPublicKey();
-		credential = new Credentials(certificate);
-		PublicKey testKey = credential.fetchKeyTest(certificate);
-		boolean testResult = testKey.equals(sourceKey);
-		if (testResult) {
-			System.out.println("Public keys match!");
-			tearDown();
-			return;
-		}
-		fail("Failed key check. Method returned false.");
-	}
-	
-	@Test
-	public void testDisguise() {
-		try {
-			Credentials cred = new Credentials(certificate);
-			cred.setPassword(mockPwd);
-			disguised = cred.getPassword(certificate);
-			if (disguised != safeMockPwd) {
-				System.out.println("Yay! it works");
-				return;
-			}
-			fail("Credential was not disguised.");
-		} catch (Exception e) {
-			e.printStackTrace();
-			fail("Exception thrown");
-		}
-	}
-	
-	@Test public void testUnDisguise() throws Exception {
-		Credentials cred = new Credentials(certificate);
-		char[] undisguised = cred.testUnDisguise(safeMockPwd, certificate);
-		if(Arrays.equals(mockPwd,undisguised)) {
-			System.out.println("Password decrypted successfully!");
-			return;
-		}
-		fail("The unencrypted password does not match the original");
-	}
+//	@Test
+//	public void testFetchKey() throws Exception {
+//		setUp();
+//		PublicKey sourceKey = certificate.getPublicKey();
+//		credential = new Credentials(certificate);
+//		PublicKey testKey = credential.fetchKeyTest(certificate);
+//		boolean testResult = testKey.equals(sourceKey);
+//		if (testResult) {
+//			System.out.println("Public keys match!");
+//			tearDown();
+//			return;
+//		}
+//		fail("Failed key check. Method returned false.");
+//	}
+//	
+//	@Test
+//	public void testDisguise() {
+//		try {
+//			Credentials cred = new Credentials(certificate);
+//			cred.setPassword(mockPwd);
+//			disguised = cred.getPassword(certificate);
+//			if (disguised != safeMockPwd) {
+//				System.out.println("Yay! it works");
+//				return;
+//			}
+//			fail("Credential was not disguised.");
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			fail("Exception thrown");
+//		}
+//	}
+//	
+//	@Test public void testUnDisguise() throws Exception {
+//		Credentials cred = new Credentials(certificate);
+//		char[] undisguised = cred.testUnDisguise(safeMockPwd, certificate);
+//		if(Arrays.equals(mockPwd,undisguised)) {
+//			System.out.println("Password decrypted successfully!");
+//			return;
+//		}
+//		fail("The unencrypted password does not match the original");
+//	}
 	
 
 //	private void makeSafeStorePwd() throws Exception {
