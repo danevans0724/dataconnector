@@ -57,7 +57,7 @@ public class ConnectionDialog extends Dialog {
 	 * @return the result
 	 */
 	public Object open() {
-		createContents();
+//		createContents();
 		shlConn.open();
 		shlConn.layout();
 		Display display = getParent().getDisplay();

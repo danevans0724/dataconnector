@@ -181,9 +181,7 @@ public class ConnectionStrFactory {
 	 * @throws Exception 
 	 * 
 	 */
-	private void setUIDPWD() throws Exception {
-		//TODO: if no credentials then pop a dialog and get them.
-		
+	private void setUIDPWD() throws Exception {		
 		parmList = new Properties();		
 		parmList.put("user", new String(db.getCredentials().getUserID()));
 		parmList.put("password", new String(db.getCredentials().getPassword(fetchCert()))); 
