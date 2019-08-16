@@ -5,7 +5,6 @@ import java.sql.SQLException;
 
 public class DBMS implements IDatabase {
 	
-	
 	IHost host;
 	DBType dbType;
 	String instance;	// The database instance name. 
@@ -15,9 +14,9 @@ public class DBMS implements IDatabase {
 	
 	public DBMS() {
 		host = new Host();
-		instance = new String();
-		dbName = new String();
-		schema = new String();
+		instance = "";
+		dbName = "";
+		schema = "";
 	}
 	
 	public DBMS(IHost h) {
@@ -39,10 +38,6 @@ public class DBMS implements IDatabase {
 	
 	public void setDBMS(DBType d) {
 		dbType = d;
-	}
-
-	public String buildConnectionString(IHost h, IDatabase d, DBType dbType){
-		return null;
 	}
 
 	public Connection connect(String connStr) throws SQLException{
@@ -84,13 +79,11 @@ public class DBMS implements IDatabase {
 
 	@Override
 	public String buildConnectionString(DBType dbType) throws Exception {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Object addParms(String p, char[] v) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -100,12 +93,12 @@ public class DBMS implements IDatabase {
 	}
 
 	@Override
-	public String getConnectionString() throws Exception {
+	public String getConnectionString() throws SQLException {
 		return null;
 	}
 
 	@Override
 	public void setConnectionString(String s) {
-		return;
+		//See concrete definition of this method in the inherited class(es).
 	}	
 }

@@ -2,6 +2,8 @@ package org.evansnet.dataconnector.internal.core;
 
 
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.security.KeyStoreException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
 import java.util.logging.Level;
@@ -17,8 +19,13 @@ public final class Credentials {
 	private char[] pwd;		//disguised only!
 	private CommonSec security;
 	
-	public Credentials() throws Exception {
-		security = CommonSec.getInstance();
+	public Credentials() {
+		try {
+			security = CommonSec.getInstance();
+		} catch (KeyStoreException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public Credentials (Certificate certificate) throws Exception {
@@ -35,18 +42,22 @@ public final class Credentials {
 		txtPassword = null;
 	}
 	
-	private Certificate fetchCert() {
+	private Certificate fetchCert() throws IOException {
 		Global global = Global.getInstance();
 		String certFile = global.getDataCert();
+		FileInputStream fis = null;
+		Certificate pubCert;
 		try {
-			FileInputStream fis = new FileInputStream(certFile);
 			CertificateFactory factory = CertificateFactory.getInstance("X.509");
-			Certificate pubCert = factory.generateCertificate(fis);
-			certFile = null;
+			pubCert = factory.generateCertificate(fis);
 			return pubCert;
 		} catch (Exception e) {
 			javaLogger.log(Level.SEVERE, "Failed to read certificate from file. Error; " + e.getMessage());
 			e.printStackTrace();
+		} finally {
+			if (fis != null) {
+				fis.close();
+			}
 		}
 		return null;
 	}

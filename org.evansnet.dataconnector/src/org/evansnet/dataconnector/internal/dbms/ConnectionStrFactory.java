@@ -1,8 +1,11 @@
 package org.evansnet.dataconnector.internal.dbms;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
+import java.sql.SQLException;
 import java.util.Properties;
 import java.util.Set;
 
@@ -20,7 +23,7 @@ public class ConnectionStrFactory {
 	
 //	public String ConnectionStringFactory() {return null;}
 	
-	public ConnectionStrFactory(IHost h, IDatabase d) throws Exception {
+	public ConnectionStrFactory(IHost h, IDatabase d) throws SQLException {
 		dbtype = d.getDBMS();
 		host   = h;
 		db = d;
@@ -35,7 +38,7 @@ public class ConnectionStrFactory {
 	 * @throws Exception 
 	 */
 
-	private void buildConnString() throws Exception {
+	private void buildConnString() throws SQLException {
 		
 		switch (dbtype) {
 		case DB2: 
@@ -102,7 +105,7 @@ public class ConnectionStrFactory {
 	 * jdbc:mysql://<<Host>>:3306/<<database>>
 	 * Example: jdbc:mysql://10.100.12.64:3306/DCEDB01
 	 */
-	private void buildMySQL() throws Exception {
+	private void buildMySQL() throws SQLException {
 		//TODO: Modify this to handle various parameters such as instance name etc.
 		setUIDPWD();
 		StringBuilder s = new StringBuilder();
@@ -128,7 +131,7 @@ public class ConnectionStrFactory {
 		connString = s.toString();
 	}
 
-	private void buildMSSQL_Server() throws Exception {
+	private void buildMSSQL_Server() throws SQLException {
 		//TODO: Modify this to handle various parameters such as instance name etc.
 		setUIDPWD();
 		StringBuilder s = new StringBuilder();
@@ -157,7 +160,7 @@ public class ConnectionStrFactory {
 	 * jdbc:derby://<<server>>[:<<port>>]/<<databaseName>>[;<URL attribute>=<value>]
 	 * @throws Exception 
 	 */
-	private void buildDerby() throws Exception {
+	private void buildDerby() throws SQLException {
 		// TODO Finish the connection string builder for Derby.
 		setUIDPWD();
 		
@@ -168,7 +171,7 @@ public class ConnectionStrFactory {
 	 * Ex: jdbc:db2://DCEDB2Srv1:50000/DCEDB2
 	 * @throws Exception 
 	 */
-	private void buildDB2() throws Exception {
+	private void buildDB2() throws SQLException {
 		// TODO Finish the connection string builder for DB2.
 		setUIDPWD();
 		
@@ -181,10 +184,14 @@ public class ConnectionStrFactory {
 	 * @throws Exception 
 	 * 
 	 */
-	private void setUIDPWD() throws Exception {		
-		parmList = new Properties();		
-		parmList.put("user", new String(db.getCredentials().getUserID()));
-		parmList.put("password", new String(db.getCredentials().getPassword(fetchCert()))); 
+	private void setUIDPWD() throws SQLException {		
+		try {
+			parmList = new Properties();		
+			parmList.put("user", new String(db.getCredentials().getUserID()));
+			parmList.put("password", new String(db.getCredentials().getPassword(fetchCert())));
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
 	}
 	
 	
@@ -196,9 +203,10 @@ public class ConnectionStrFactory {
 			CertificateFactory factory = CertificateFactory.getInstance("X.509");
 			Certificate cert = factory.generateCertificate(fis);
 			return cert;
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (FileNotFoundException fnfe) {
+			fnfe.printStackTrace();
+		} catch (CertificateException ce) {
+			ce.printStackTrace();
 		}
 		return null;
 	}
@@ -221,7 +229,7 @@ public class ConnectionStrFactory {
 	/**
 	 * @return the connString
 	 */
-	public String getConnString() throws Exception {
+	public String getConnString() throws SQLException {
 		if (connString.isEmpty() || connString == null) {
 			buildConnString();
 		}

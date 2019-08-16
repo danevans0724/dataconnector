@@ -19,7 +19,7 @@ public interface IDatabase {
 	public void setCredentials(Credentials c);
 	public String getSchema();
 	public Connection getConnection();
-	public String getConnectionString() throws Exception;
+	public String getConnectionString() throws SQLException;
 	public void setConnectionString(String s);
 	public IHost getHost();
 	public void setSchema(String string);

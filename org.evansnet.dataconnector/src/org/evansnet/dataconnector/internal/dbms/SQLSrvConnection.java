@@ -27,7 +27,7 @@ import org.evansnet.dataconnector.internal.core.IHost;
 		public SQLSrvConnection() throws ClassNotFoundException, SQLException {
 			super();
 			getHost().setPort(1433);
-			connStr = new String("");
+			connStr = "";
 			parmList = new Properties();
 			setDBMS(DBType.MS_SQLSrv);
 		}
@@ -49,7 +49,7 @@ import org.evansnet.dataconnector.internal.core.IHost;
                     + "loginTimeout=30;";  
 		 */
 		@Override
-		public String buildConnectionString(DBType dbt) throws Exception {
+		public String buildConnectionString(DBType dbt) throws SQLException {
 			javaLogger.log(Level.INFO, "Building SQL Server Connection String.");
 			ConnectionStrFactory csf = new ConnectionStrFactory(getHost(), this);
 			return csf.getConnString();
@@ -77,7 +77,7 @@ import org.evansnet.dataconnector.internal.core.IHost;
 			conn = c;
 		}
 		
-		public String getConnectionString() throws Exception {
+		public String getConnectionString() throws SQLException {
 			if (connStr.isEmpty()) {
 				connStr = buildConnectionString(DBType.MS_SQLSrv);
 			}
