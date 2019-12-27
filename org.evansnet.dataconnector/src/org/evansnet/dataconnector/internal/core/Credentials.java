@@ -23,16 +23,12 @@ public final class Credentials {
 		try {
 			security = CommonSec.getInstance();
 		} catch (KeyStoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			javaLogger.log(Level.SEVERE, "Failed to construct Credentials object " + e.getMessage());
 		}
 	}
 	
-	public Credentials (Certificate certificate) throws Exception {
-		this();
-	}
 
-	public void setUserID(char[] txtUserID) throws Exception {
+	public final void setUserID(char[] txtUserID) throws Exception {
 		uid = txtUserID;
 		txtUserID = null;
 	}
@@ -45,7 +41,7 @@ public final class Credentials {
 	private Certificate fetchCert() throws IOException {
 		Global global = Global.getInstance();
 		String certFile = global.getDataCert();
-		FileInputStream fis = null;
+		FileInputStream fis = new FileInputStream(certFile);
 		Certificate pubCert;
 		try {
 			CertificateFactory factory = CertificateFactory.getInstance("X.509");
@@ -53,11 +49,8 @@ public final class Credentials {
 			return pubCert;
 		} catch (Exception e) {
 			javaLogger.log(Level.SEVERE, "Failed to read certificate from file. Error; " + e.getMessage());
-			e.printStackTrace();
 		} finally {
-			if (fis != null) {
 				fis.close();
-			}
 		}
 		return null;
 	}

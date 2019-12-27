@@ -36,8 +36,7 @@ public class SQLConnectorTest {
 	private Certificate fetchCertificate() throws Exception {
 		String certFile = "C:\\Users\\pmidce0\\git\\dataconnector\\org.evansnet.dataconnector\\security\\credentials.cer";
 		FileInputStream fis = new FileInputStream (certFile);
-		Certificate cert = CertificateFactory.getInstance("X.509").generateCertificate(fis);
-		return cert;
+		return CertificateFactory.getInstance("X.509").generateCertificate(fis);
 	}
 
 	@Test

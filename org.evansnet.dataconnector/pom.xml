@@ -21,7 +21,7 @@
 	
 	<repositories>
 		<repository>
-			<id>photon</id>
+			<id>eclipse-photon</id>
 			<layout>p2</layout>
 			<url>http://download.eclipse.org/releases/photon</url>
 		</repository>
@@ -33,7 +33,47 @@
 		<maven.compiler.target>1.9</maven.compiler.target>
 	</properties>
 
-	<dependencies></dependencies>
+	<dependencies>
+		<dependency>
+			<groupId>org.eclipse.ui</groupId>
+			<artifactId>org.eclipse.ui</artifactId>
+			<version>0.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.core.runtime</groupId>
+			<artifactId>org.eclipse.core.runtime</artifactId>
+			<version>0.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.evansnet.common</groupId>
+			<artifactId>org.evansnet.common</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.tycho</groupId>
+			<artifactId>sisu-equinox-api</artifactId>
+			<version>0.25.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.tycho</groupId>
+			<artifactId>sisu-equinox-embedder</artifactId>
+			<version>0.25.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.tycho</groupId>
+			<artifactId>org.eclipse.tycho.core.shared</artifactId>
+			<version>0.25.0</version>
+			<type>eclipse-plugin</type>
+		</dependency>
+	</dependencies>
 	<name>dataconnector</name>
-	<url>file:///C:\Users\pmidce0\git\dataconnector\.git\org.evansnet.dataconnector</url>
+	<description>Tycho-Maven build of the dataconnector plug-in</description>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.evansnet.common</groupId>
+				<artifactId>org.evansnet.common</artifactId>
+				<version>0.0.0</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 </project>
