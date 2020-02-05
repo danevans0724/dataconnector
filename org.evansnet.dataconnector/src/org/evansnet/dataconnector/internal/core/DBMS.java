@@ -2,6 +2,7 @@ package org.evansnet.dataconnector.internal.core;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Properties;
 
 public class DBMS implements IDatabase {
 	
@@ -11,12 +12,15 @@ public class DBMS implements IDatabase {
 	String dbName;
 	String schema;
 	Credentials dbCredentials;
+	Properties parmList;
+
 	
 	public DBMS() {
 		host = new Host();
 		instance = "";
 		dbName = "";
 		schema = "";
+		parmList = new Properties();
 	}
 	
 	public DBMS(IHost h) {
@@ -84,7 +88,7 @@ public class DBMS implements IDatabase {
 
 	@Override
 	public Object addParms(String p, char[] v) {
-		return null;
+		return parmList.put(p, v);
 	}
 
 	@Override
@@ -100,5 +104,10 @@ public class DBMS implements IDatabase {
 	@Override
 	public void setConnectionString(String s) {
 		//See concrete definition of this method in the inherited class(es).
-	}	
+	}
+
+	@Override
+	public Properties getParameters() {
+		return parmList;
+	}
 }

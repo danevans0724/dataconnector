@@ -22,7 +22,7 @@ public class MySQLConnection extends DBMS {
 	public MySQLConnection() throws ClassNotFoundException, SQLException {
 		super();
 		getHost().setPort(3306);
-		connStr = new String("");
+		connStr = "";
 		parmList = new Properties();
 		setDBMS(DBType.MySQL);
 	}
@@ -46,12 +46,13 @@ public class MySQLConnection extends DBMS {
 			javaLogger.log(Level.INFO,"Successful connection to " + getDatabaseName());
 		return c;
 		} catch (Exception e) {
-			javaLogger.log(Level.INFO, "Failed to connect to " + getDatabaseName());
-			e.printStackTrace();
+			javaLogger.log(Level.INFO, "Failed to connect to " + getDatabaseName() + "\n" +
+					"Cause: " + e.getCause());
 			return null;
 		}		
 	}
 	
+	@Override
 	public Connection getConnection() {
 		return conn;
 	}
@@ -60,6 +61,7 @@ public class MySQLConnection extends DBMS {
 		conn = c;
 	}
 	
+	@Override
 	public String getConnectionString() {
 		return connStr;
 	}
@@ -67,10 +69,5 @@ public class MySQLConnection extends DBMS {
 	@Override
 	public Object addParms(String p, char[] v) {
 		return parmList.put(p, v);
-	}
-
-	@Override
-	public String getDatabaseName() {
-		return super.getDatabaseName();
 	}
 }

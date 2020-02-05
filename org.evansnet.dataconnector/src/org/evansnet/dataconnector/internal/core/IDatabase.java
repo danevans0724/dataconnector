@@ -1,8 +1,9 @@
 package org.evansnet.dataconnector.internal.core;
-import java.sql.Connection;
 
+import java.sql.Connection;
 import java.sql.SQLException;
-import org.evansnet.dataconnector.internal.core.DBType;
+import java.util.Properties;
+
 
 public interface IDatabase {
 	
@@ -15,6 +16,7 @@ public interface IDatabase {
 	public String getDatabaseName();
 	public DBType getDBMS();
 	public Object addParms(String p, char[] v);
+	public Properties getParameters();
 	public Credentials getCredentials();
 	public void setCredentials(Credentials c);
 	public String getSchema();

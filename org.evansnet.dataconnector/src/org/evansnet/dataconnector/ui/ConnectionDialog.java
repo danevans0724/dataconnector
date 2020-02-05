@@ -126,9 +126,8 @@ public class ConnectionDialog extends Dialog {
 	private void doConnect() throws Exception {
 		modelPopulate();
 		String cStr = dbms.buildConnectionString(dbms.getDBMS());
-		try {
-			dbms.connect(cStr);
-			conn = dbms.getConnection(); 
+		try {		
+			conn = dbms.connect(cStr); 
 			result = dbms;
 			shlConn.dispose();
 		} catch (SQLException e) {

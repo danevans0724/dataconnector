@@ -13,7 +13,7 @@ import org.evansnet.common.configuration.Global;
 import org.evansnet.common.security.CommonSec;
 
 
-public final class Credentials {
+public class Credentials {
 	public static Logger javaLogger = Logger.getLogger(Credentials.class.getName());
 	private char[] uid;		//disguised only!
 	private char[] pwd;		//disguised only!

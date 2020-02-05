@@ -3,7 +3,7 @@ package org.evansnet.dataconnector.internal.dbms;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Properties;
+import java.sql.SQLTimeoutException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -13,7 +13,7 @@ import org.evansnet.dataconnector.internal.core.IHost;
 
 	/** 
 	 * Represents a Microsoft SQL Server database server.
-	 * @author pmidce0
+	 * @author Dan Evans (c) 2020
 	 *
 	 */
 	public class SQLSrvConnection extends DBMS {
@@ -22,13 +22,11 @@ import org.evansnet.dataconnector.internal.core.IHost;
 		
 		String connStr;
 		Connection conn;
-		Properties parmList;
 
 		public SQLSrvConnection() throws ClassNotFoundException, SQLException {
 			super();
-			getHost().setPort(1433);
+			getHost().setPort(1433);	// MS SQL Server default port.
 			connStr = "";
-			parmList = new Properties();
 			setDBMS(DBType.MS_SQLSrv);
 		}
 		
@@ -38,7 +36,7 @@ import org.evansnet.dataconnector.internal.core.IHost;
 		}
 			
 		/**
-		 * Connection string for SQL Server JDBC driver:
+		 * Connection string for Microsoft SQL Server JDBC driver:
 		 *          "jdbc:sqlserver://yourserver.database.windows.net:1433;"  
                     + "database=AdventureWorks;"  
                     + "user=yourusername@yourserver;"  
@@ -47,9 +45,10 @@ import org.evansnet.dataconnector.internal.core.IHost;
                     + "trustServerCertificate=false;"  
                     + "hostNameInCertificate=*.database.windows.net;"  
                     + "loginTimeout=30;";  
+		 * @throws Exception 
 		 */
 		@Override
-		public String buildConnectionString(DBType dbt) throws SQLException {
+		public String buildConnectionString(DBType dbt) throws Exception {
 			javaLogger.log(Level.INFO, "Building SQL Server Connection String.");
 			ConnectionStrFactory csf = new ConnectionStrFactory(getHost(), this);
 			return csf.getConnString();
@@ -62,13 +61,15 @@ import org.evansnet.dataconnector.internal.core.IHost;
 				setConnection(c);
 				javaLogger.log(Level.INFO,"Successful connection to " + getDatabaseName());
 			return c;
-			} catch (Exception e) {
+			} catch (SQLTimeoutException e) {
+				throw new SQLException("/nThe connection attempt timed out.");
+			} catch (SQLException e) {
 				javaLogger.log(Level.INFO, "Failed to connect to " + getDatabaseName());
-				e.printStackTrace();
-				return null;
-			}		
+					throw new SQLException("/nThe connection string is null or empty.");
+			} 
 		}
 		
+		@Override
 		public Connection getConnection() {
 			return conn;
 		}
@@ -77,21 +78,16 @@ import org.evansnet.dataconnector.internal.core.IHost;
 			conn = c;
 		}
 		
-		public String getConnectionString() throws SQLException {
+		@Override
+		public String getConnectionString() {
 			if (connStr.isEmpty()) {
-				connStr = buildConnectionString(DBType.MS_SQLSrv);
+				try {
+					connStr = buildConnectionString(DBType.MS_SQLSrv);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 			return connStr;
-		}
-
-		@Override
-		public Object addParms(String p, char[] v) {
-			return parmList.put(p, v);
-		}
-
-		@Override
-		public String getDatabaseName() {
-			return super.getDatabaseName();
 		}
 		
 		@Override

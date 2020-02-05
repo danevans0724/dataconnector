@@ -6,7 +6,6 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.sql.SQLException;
-import java.util.Properties;
 import java.util.Set;
 
 import org.evansnet.dataconnector.internal.core.DBType;
@@ -19,11 +18,9 @@ public class ConnectionStrFactory {
 	IHost  host;
 	IDatabase db;
 	String connString;
-	private Properties parmList;
 	
-//	public String ConnectionStringFactory() {return null;}
 	
-	public ConnectionStrFactory(IHost h, IDatabase d) throws SQLException {
+	public ConnectionStrFactory(IHost h, IDatabase d) throws Exception {
 		dbtype = d.getDBMS();
 		host   = h;
 		db = d;
@@ -38,7 +35,7 @@ public class ConnectionStrFactory {
 	 * @throws Exception 
 	 */
 
-	private void buildConnString() throws SQLException {
+	private void buildConnString() throws Exception {
 		
 		switch (dbtype) {
 		case DB2: 
@@ -104,18 +101,20 @@ public class ConnectionStrFactory {
 	 * MySQL connection string format: 
 	 * jdbc:mysql://<<Host>>:3306/<<database>>
 	 * Example: jdbc:mysql://10.100.12.64:3306/DCEDB01
+	 * @throws Exception 
 	 */
-	private void buildMySQL() throws SQLException {
-		//TODO: Modify this to handle various parameters such as instance name etc.
-		setUIDPWD();
+	private void buildMySQL() throws Exception {
 		StringBuilder s = new StringBuilder();
 		s.append("jdbc:mysql://");
 		s.append(host.getHostName() + ":" + host.getPort() + "/");
 		s.append(db.getDatabaseName());
+		s.append("?user=" + String.valueOf(db.getCredentials().getUserID())  + "&");
+		s.append("password=" +String.valueOf(db.getCredentials().getPassword(fetchCert())));
 		
-		if (!parmList.isEmpty()) {
-			Set<Object> keyset = parmList.keySet();
-			s.append("?");
+		
+		if (!db.getParameters().isEmpty()) {
+			Set<Object> keyset = db.getParameters().keySet();
+			s.append("&");
 			int count = 0;
 			for (Object key : keyset) {
 				if (((String) key).isEmpty())
@@ -124,28 +123,29 @@ public class ConnectionStrFactory {
 					s.append("&");
 				}
 				String k = (String)key;
-				s.append( k + "=" + parmList.getProperty(k).toString());
+				s.append( k + "=" + db.getParameters().getProperty(k));
 				++count;
 			}
 		}
 		connString = s.toString();
 	}
 
-	private void buildMSSQL_Server() throws SQLException {
-		//TODO: Modify this to handle various parameters such as instance name etc.
-		setUIDPWD();
+	private void buildMSSQL_Server() throws Exception {
 		StringBuilder s = new StringBuilder();
 		s.append("jdbc:sqlserver://");
 		s.append(host.getHostName() + ":" + host.getPort() + ";");
-		s.append("database=" + db.getDatabaseName());
-		
-		if (!parmList.isEmpty()) {
-			Set<Object> keyset = parmList.keySet();
+		s.append("databaseName=" + db.getDatabaseName() + ";");
+		s.append("user=" + String.valueOf(db.getCredentials().getUserID()) + ";");
+		s.append("password=" + String.valueOf(db.getCredentials().getPassword(fetchCert())));	
+
+		//Set any database parameters.
+		if (!db.getParameters().isEmpty()) {
+			Set<Object> keyset = db.getParameters().keySet();
 			for (Object key : keyset) {
 				if (((String) key).isEmpty() )
 					continue;
 				String k = (String)key;
-				s.append(";" + k + "=" + parmList.getProperty(k).toString());
+				s.append(";" + k + "=" + db.getParameters().getProperty(k));
 			}
 		}
 		connString = s.toString();
@@ -162,7 +162,6 @@ public class ConnectionStrFactory {
 	 */
 	private void buildDerby() throws SQLException {
 		// TODO Finish the connection string builder for Derby.
-		setUIDPWD();
 		
 	}
 
@@ -173,27 +172,16 @@ public class ConnectionStrFactory {
 	 */
 	private void buildDB2() throws SQLException {
 		// TODO Finish the connection string builder for DB2.
-		setUIDPWD();
 		
 	}
 
 	/**
-	 * Puts the user name and password into the Properties object, parmList.
+	 * Puts the user name and password into the Properties object, db.getParameters().
 	 * These are the first two items in the properties object and are used
 	 * to set the user ID and password in the connection string
 	 * @throws Exception 
 	 * 
 	 */
-	private void setUIDPWD() throws SQLException {		
-		try {
-			parmList = new Properties();		
-			parmList.put("user", new String(db.getCredentials().getUserID()));
-			parmList.put("password", new String(db.getCredentials().getPassword(fetchCert())));
-		} catch (Exception e) {
-			e.printStackTrace();
-		} 
-	}
-	
 	
 	//TODO: Refactor and generalize this class into a common plugin.
 	private Certificate fetchCert() {
@@ -228,9 +216,10 @@ public class ConnectionStrFactory {
 
 	/**
 	 * @return the connString
+	 * @throws Exception 
 	 */
-	public String getConnString() throws SQLException {
-		if (connString.isEmpty() || connString == null) {
+	public String getConnString() throws Exception {
+		if (connString.isEmpty()) {
 			buildConnString();
 		}
 		return connString;
