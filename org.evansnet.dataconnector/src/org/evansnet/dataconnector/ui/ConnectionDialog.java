@@ -4,6 +4,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Dialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.evansnet.common.ui.CredentialsComposite;
 import org.evansnet.dataconnector.internal.core.Credentials;
 import org.evansnet.dataconnector.internal.core.DBMS;
 import org.evansnet.dataconnector.internal.core.DBType;
