@@ -7,7 +7,7 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.evansnet.dataconnector.internal.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.evansnet.model.common
+ org.evansnet.common
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: org.evansnet.dataconnector.internal.core,
