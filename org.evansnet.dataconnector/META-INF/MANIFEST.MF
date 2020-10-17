@@ -15,7 +15,7 @@ Export-Package: org.evansnet.dataconnector.internal.core,
  org.evansnet.dataconnector.ui
 Bundle-ClassPath: .,
  lib/jtds-1.2.2.jar,
- lib/mysql-connector-java-5.1.32-bin.jar,
- lib/ojdbc6.jar,
  lib/sqlite-jdbc-3.8.11.2.jar,
- lib/sqljdbc4.jar
+ lib/sqljdbc4.jar,
+ lib/mysql-connector-java-8.0.21.jar,
+ lib/ojdbc8.jar
