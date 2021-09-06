@@ -3,11 +3,10 @@ package org.evansnet.dataconnector.internal.test;
 import static org.junit.Assert.*;
 
 import java.io.FileInputStream;
-//import java.io.FileOutputStream;
-import java.security.PublicKey;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
-import java.util.Arrays;
 
 //import javax.crypto.Cipher;
 
@@ -20,7 +19,10 @@ import org.junit.Test;
 
 public class CredentialsTest {
 	
-	private final String pubCertFile = "C:\\Users\\pmidce0\\git\\dataconnector\\org.evansnet.dataconnector\\security\\credentials.cer";
+	private Path currentPath = Paths.get("");
+	private String testPathString = currentPath.toAbsolutePath().toString();
+	private final String pubCertFile = testPathString + System.getProperty("file.separator") 
+		+  "security" + System.getProperty("file.separator") + "credentials.cer";
 	Credentials credential;
 	Certificate certificate;
 	char[] mockPwd = {'H','e','l','l','o'};
